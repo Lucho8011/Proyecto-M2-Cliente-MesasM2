@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mb-3">
+  <div class="col-md-8">
+    <h3>Reservas</h3>
+    <p class="text-muted">Lista y filtros</p>
+  </div>
+  <div class="col-md-4 text-end">
+    <a href="{% url 'crear_reserva' %}" class="btn btn-success">Nueva Reserva</a>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <form method="GET" class="row g-2 align-items-end">
+      <div class="col-md-3">
+        <label class="form-label">Fecha</label>
+        <input type="date" name="fecha" class="form-control" value="{{ filtros.fecha }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Cliente</label>
+        <select name="cliente" class="form-select">
+          <option value="">Todos</option>
+          {% for c in clientes %}
+            <option value="{{ c.id }}" {% if filtros.cliente == c.id|stringformat:"s" %}selected{% endif %}>{{ c.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Estado</label>
+        <select name="estado" class="form-select">
+          <option value="">Todos</option>
+          <option value="CONFIRMADA" {% if filtros.estado == 'CONFIRMADA' %}selected{% endif %}>Confirmada</option>
+          <option value="LLEGO" {% if filtros.estado == 'LLEGO' %}selected{% endif %}>Cliente Llegó</option>
+          <option value="CANCELADA" {% if filtros.estado == 'CANCELADA' %}selected{% endif %}>Cancelada</option>
+        </select>
+      </div>
+      <div class="col-md-2 text-end">
+        <button class="btn btn-primary">Filtrar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="list-group">
+  {% for r in reservas %}
+    <div class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        <div class="fw-bold">{{ r.cliente.nombre }} — Mesa: {% if r.mesa_asignada %}{{ r.mesa_asignada.numero }}{% else %}-{% endif %}</div>
+          <div class="text-muted">{{ r.fecha|date:'Y-m-d' }} • {{ r.hora_inicio|date:'H:i' }} → {{ r.hora_fin|date:'H:i' }} • {{ r.cantidad_personas }} pax • Estado: {{ r.get_estado_display }}</div>
+      </div>
+      <div>
+        <a href="#" class="btn btn-sm btn-outline-secondary">Ver</a>
+      </div>
+    </div>
+  {% empty %}
+    <div class="list-group-item text-muted">No hay reservas para la fecha seleccionada.</div>
+  {% endfor %}
+</div>
+
+{% endblock %}

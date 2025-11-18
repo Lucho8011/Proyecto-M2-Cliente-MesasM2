@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Base de Datos de Clientes</h2>
+    <a href="{% url 'registrar_cliente' %}" class="btn btn-success"><i class="bi bi-plus-lg"></i> Nuevo Cliente</a>
+</div>
+
+<div class="card mb-4 bg-light border-0">
+    <div class="card-body">
+        <form method="GET" class="row g-2">
+            <div class="col-md-10">
+                <input type="text" name="q" class="form-control" placeholder="Buscar por nombre o teléfono..." value="{{ request.GET.q }}">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Buscar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="table-responsive shadow-sm bg-white rounded">
+    <table class="table table-hover mb-0">
+        <thead class="table-light">
+            <tr>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>Notas / Preferencias</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+            <tr>
+                <td class="fw-bold">{{ cliente.nombre }}</td>
+                <td>{{ cliente.telefono }}</td>
+                <td>{{ cliente.notas|default:"-" }}</td>
+                <td>
+                    <a href="#" class="btn btn-sm btn-outline-primary">Ver Perfil</a>
+                    <a href="{% url 'elegir_mesa_para_cliente' cliente.id %}" class="btn btn-sm btn-outline-success ms-2">Asignar a Mesa</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center py-4 text-muted">
+                    No se encontraron clientes. ¡Registra uno nuevo!
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

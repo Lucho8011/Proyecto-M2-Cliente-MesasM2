@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card border-success shadow">
+            <div class="card-header bg-success text-white text-center">
+                <h3 class="mb-0">Asignar Mesa {{ mesa.numero }}</h3>
+            </div>
+            <div class="card-body p-4 text-center">
+                <h5 class="text-muted mb-4">Capacidad: {{ mesa.capacidad }} personas | Ubicación: {{ mesa.ubicacion }}</h5>
+                
+                <p class="lead">¿Confirmar asignación inmediata para clientes presentes (Walk-in)?</p>
+                
+                <form method="POST" class="d-grid gap-2 col-8 mx-auto">
+                    {% csrf_token %}
+                    <input type="hidden" name="tipo" value="walkin">
+                    
+                    <button type="submit" class="btn btn-success btn-lg py-3">
+                        <i class="bi bi-check-circle-fill"></i> CONFIRMAR ASIGNACIÓN
+                    </button>
+                    
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary">Cancelar</a>
+                </form>
+                
+                <hr class="my-4">
+                
+                <div class="alert alert-info text-start">
+                    <small><i class="bi bi-info-circle"></i> En futuras versiones podrás asignar esta mesa a una reserva específica desde aquí.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

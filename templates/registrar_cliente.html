@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="bi bi-person-plus-fill"></i> Registrar Nuevo Cliente</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre Completo *</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required placeholder="Ej: Juan Pérez">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Teléfono *</label>
+                        <input type="tel" class="form-control" id="telefono" name="telefono" required placeholder="+56 9 1234 5678">
+                        <div class="form-text">Debe ser único en el sistema.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="notas" class="form-label">Notas / Preferencias</label>
+                        <textarea class="form-control" id="notas" name="notas" rows="3" placeholder="Ej: Alérgico a las nueces, prefiere terraza..."></textarea>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">Guardar Cliente</button>
+                        <a href="{% url 'lista_clientes' %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
